@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}Create Your Profile - Psychology Profile Visualizer{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-header bg-primary text-white">
+                    <h3 class="mb-0">Create Your Profile</h3>
+                </div>
+                <div class="card-body">
+                    <p class="lead mb-4">Let's start by creating your profile. This information will help us personalize your psychological assessment.</p>
+                    
+                    <form method="POST" action="{{ url_for('onboarding.create_profile') }}">
+                        <div class="mb-3">
+                            <label for="name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="name" name="name" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="email" class="form-label">Email Address</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                            <div class="form-text">We'll use this to save your profile and send you results.</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="age" class="form-label">Age</label>
+                            <input type="number" class="form-control" id="age" name="age" min="18" max="120" required>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label>
+                            <select class="form-select" id="gender" name="gender" required>
+                                <option value="" selected disabled>Select your gender</option>
+                                <option value="male">Male</option>
+                                <option value="female">Female</option>
+                                <option value="non_binary">Non-binary</option>
+                                <option value="prefer_not_to_say">Prefer not to say</option>
+                            </select>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="occupation" class="form-label">Occupation</label>
+                            <input type="text" class="form-control" id="occupation" name="occupation">
+                            <div class="form-text">Optional - helps us understand your work environment</div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label for="timezone" class="form-label">Timezone</label>
+                            <select class="form-select" id="timezone" name="timezone" required>
+                                <option value="" selected disabled>Select your timezone</option>
+                                <option value="UTC-12">UTC-12</option>
+                                <option value="UTC-11">UTC-11</option>
+                                <option value="UTC-10">UTC-10</option>
+                                <option value="UTC-9">UTC-9</option>
+                                <option value="UTC-8">UTC-8</option>
+                                <option value="UTC-7">UTC-7</option>
+                                <option value="UTC-6">UTC-6</option>
+                                <option value="UTC-5">UTC-5</option>
+                                <option value="UTC-4">UTC-4</option>
+                                <option value="UTC-3">UTC-3</option>
+                                <option value="UTC-2">UTC-2</option>
+                                <option value="UTC-1">UTC-1</option>
+                                <option value="UTC+0">UTC+0</option>
+                                <option value="UTC+1">UTC+1</option>
+                                <option value="UTC+2">UTC+2</option>
+                                <option value="UTC+3">UTC+3</option>
+                                <option value="UTC+4">UTC+4</option>
+                                <option value="UTC+5">UTC+5</option>
+                                <option value="UTC+5:30">UTC+5:30</option>
+                                <option value="UTC+6">UTC+6</option>
+                                <option value="UTC+7">UTC+7</option>
+                                <option value="UTC+8">UTC+8</option>
+                                <option value="UTC+9">UTC+9</option>
+                                <option value="UTC+10">UTC+10</option>
+                                <option value="UTC+11">UTC+11</option>
+                                <option value="UTC+12">UTC+12</option>
+                            </select>
+                        </div>
+                        
+                        <div class="form-check mb-3">
+                            <input class="form-check-input" type="checkbox" id="terms" name="terms" required>
+                            <label class="form-check-label" for="terms">
+                                I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+                            </label>
+                        </div>
+                        
+                        <div class="d-grid gap-2">
+                            <button type="submit" class="btn btn-primary btn-lg">Create Profile & Continue</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

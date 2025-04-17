@@ -2,12 +2,17 @@ from flask import Blueprint, logging, render_template, request, session, redirec
 from app.models.questionnaire import get_questionnaire_by_section, get_all_sections
 from app.utils.scoring import score_responses
 from app.utils.api_client import api_client
+import uuid
 
 onboarding = Blueprint('onboarding', __name__, url_prefix='/onboarding')
 
 @onboarding.route('/', methods=['GET'])
 def index():
     """Start the onboarding process."""
+    # Check if profile is already created
+    if 'profile_id' not in session:
+        return redirect(url_for('onboarding.create_profile'))
+    
     # Initialize session if starting onboarding
     if 'current_section' not in session:
         session['current_section'] = 'personality'
@@ -22,9 +27,54 @@ def index():
                            sections_completed=session.get('sections_completed', []),
                            progress=calculate_progress())
 
+@onboarding.route('/create-profile', methods=['GET', 'POST'])
+def create_profile():
+    """Create a new user profile."""
+    if request.method == 'POST':
+        # Get form data and store in session for later use
+        session['user_data'] = {
+            'name': request.form.get('name'),
+            'email': request.form.get('email'),
+            'age': int(request.form.get('age')),
+            'gender': request.form.get('gender'),
+            'occupation': request.form.get('occupation'),
+            'timezone': request.form.get('timezone')
+        }
+        
+        # Create profile data matching the backend model
+        profile_data = {
+            'user_id': str(uuid.uuid4()),  # Generate a unique ID
+            'personality_traits': None,
+            'sleep_preferences': None,
+            'behavioral_patterns': None,
+            'raw_scores': None
+        }
+        
+        try:
+            # Create profile in the API
+            profile_result = api_client.create_profile(profile_data)
+            
+            # Store profile ID and user data in session
+            session['profile_id'] = profile_result.get('profile', {}).get('profile_id')
+            session['profile_data'] = profile_result
+            
+            # Redirect to the first section
+            return redirect(url_for('onboarding.index'))
+            
+        except Exception as e:
+            current_app.logger.error(f"Error creating profile: {e}")
+            flash('Error creating profile. Please try again.', 'error')
+            return redirect(url_for('onboarding.create_profile'))
+    
+    return render_template('create_profile.html')
+
 @onboarding.route('/submit', methods=['POST'])
 def submit_section():
     """Submit answers for the current section."""
+    # Check if profile exists
+    if 'profile_id' not in session:
+        return redirect(url_for('onboarding.create_profile'))
+    
     data = request.form.to_dict()
     current_section = session['current_section']
     
@@ -71,6 +121,10 @@ def submit_section():
 @onboarding.route('/section/<section_name>', methods=['GET'])
 def goto_section(section_name):
     """Go to a specific section of the questionnaire."""
+    # Check if profile exists
+    if 'profile_id' not in session:
+        return redirect(url_for('onboarding.create_profile'))
+    
     all_sections = get_all_sections()
     
     if section_name in all_sections:

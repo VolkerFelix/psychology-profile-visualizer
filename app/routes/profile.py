@@ -9,6 +9,10 @@ def index():
     if not session.get('onboarding_complete', False):
         return redirect(url_for('onboarding.index'))
     
+    # Check if profile exists
+    if 'profile_id' not in session:
+        return redirect(url_for('onboarding.create_profile'))
+    
     # Get profile data from session
     profile_data = session.get('profile', {})
     
@@ -17,11 +21,18 @@ def index():
         return redirect(url_for('onboarding.index'))
     
     # Render profile visualization template
-    return render_template('profile.html', profile=profile_data)
+    return render_template('profile.html', 
+                          profile=profile_data,
+                          profile_id=session.get('profile_id'),
+                          user_data=session.get('profile_data', {}))
 
 @profile.route('/data', methods=['GET'])
 def profile_data():
     """Return profile data as JSON for visualization."""
+    # Check if profile exists
+    if 'profile_id' not in session:
+        return jsonify({'error': 'No profile ID available'}), 404
+    
     profile_data = session.get('profile', {})
     
     if not profile_data:
