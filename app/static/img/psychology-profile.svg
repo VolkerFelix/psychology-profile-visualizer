@@ -1,0 +1,46 @@
+<svg viewBox="0 0 600 400" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background -->
+  <rect width="600" height="400" fill="#f8f9fa" rx="15" ry="15"/>
+  
+  <!-- Brain outline -->
+  <path d="M300,80 C420,80 500,170 500,280 C500,350 450,380 400,380 C360,380 340,350 300,350 C260,350 240,380 200,380 C150,380 100,350 100,280 C100,170 180,80 300,80 Z" 
+        fill="#ffffff" stroke="#007bff" stroke-width="3"/>
+  
+  <!-- Left hemisphere sections -->
+  <path d="M300,80 C240,80 180,120 150,200 C140,240 150,280 180,300 C210,320 250,310 300,310" 
+        fill="#e3f2fd" stroke="#0d6efd" stroke-width="2"/>
+  
+  <!-- Right hemisphere sections -->
+  <path d="M300,80 C360,80 420,120 450,200 C460,240 450,280 420,300 C390,320 350,310 300,310" 
+        fill="#cfe2ff" stroke="#0d6efd" stroke-width="2"/>
+  
+  <!-- Brain folds -->
+  <path d="M150,180 C180,160 220,170 230,190 C240,210 220,240 190,230" fill="none" stroke="#007bff" stroke-width="2" opacity="0.7"/>
+  <path d="M450,180 C420,160 380,170 370,190 C360,210 380,240 410,230" fill="none" stroke="#007bff" stroke-width="2" opacity="0.7"/>
+  <path d="M200,150 C250,140 280,150 300,170" fill="none" stroke="#007bff" stroke-width="2" opacity="0.7"/>
+  <path d="M400,150 C350,140 320,150 300,170" fill="none" stroke="#007bff" stroke-width="2" opacity="0.7"/>
+  <path d="M200,250 C250,270 280,260 300,240" fill="none" stroke="#007bff" stroke-width="2" opacity="0.7"/>
+  <path d="M400,250 C350,270 320,260 300,240" fill="none" stroke="#007bff" stroke-width="2" opacity="0.7"/>
+  
+  <!-- Personality Dimensions -->
+  <circle cx="200" cy="150" r="25" fill="#fd7e14" opacity="0.7"/>
+  <text x="200" y="155" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="bold" font-size="10">Openness</text>
+  
+  <circle cx="400" cy="150" r="25" fill="#6f42c1" opacity="0.7"/>
+  <text x="400" y="155" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="bold" font-size="10">Conscientiousness</text>
+  
+  <circle cx="150" cy="240" r="25" fill="#20c997" opacity="0.7"/>
+  <text x="150" y="245" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="bold" font-size="10">Extraversion</text>
+  
+  <circle cx="450" cy="240" r="25" fill="#0dcaf0" opacity="0.7"/>
+  <text x="450" y="245" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="bold" font-size="10">Agreeableness</text>
+  
+  <circle cx="300" cy="320" r="25" fill="#dc3545" opacity="0.7"/>
+  <text x="300" y="325" text-anchor="middle" fill="#fff" font-family="Arial" font-weight="bold" font-size="10">Neuroticism</text>
+  
+  <!-- Title -->
+  <text x="300" y="40" text-anchor="middle" fill="#212529" font-family="Arial" font-weight="bold" font-size="24">Psychological Profile</text>
+  
+  <!-- Connections -->
+  <path d="M250,200 C270,190 280,210 300,200 C320,190 330,210 350,200" fill="none" stroke="#007bff" stroke-width="2" stroke-dasharray="5,5"/>
+</svg>

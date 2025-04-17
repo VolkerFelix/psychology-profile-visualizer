@@ -1,0 +1,364 @@
+{% extends 'base.html' %}
+
+{% block title %}Your Psychological Profile{% endblock %}
+
+{% block content %}
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Personality Traits</h4>
+            </div>
+            <div class="card-body">
+                <div id="personalityChart" style="height: 400px;"></div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-4">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Dominant Traits</h4>
+            </div>
+            <div class="card-body">
+                <div id="dominantTraits">
+                    {% if profile.personality_traits.dominant_traits %}
+                        <ul class="list-group">
+                        {% for trait in profile.personality_traits.dominant_traits %}
+                            <li class="list-group-item d-flex justify-content-between align-items-center">
+                                {{ trait|capitalize }}
+                                <span class="badge bg-primary rounded-pill">
+                                    {{ profile.personality_traits[trait] }}%
+                                </span>
+                            </li>
+                        {% endfor %}
+                        </ul>
+                    {% else %}
+                        <p class="text-muted">No dominant traits identified</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Sleep Preferences</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Chronotype:</th>
+                            <td>
+                                {% if profile.sleep_preferences.chronotype == 'morning_person' %}
+                                    <span class="badge bg-warning text-dark">Morning Person</span>
+                                {% elif profile.sleep_preferences.chronotype == 'evening_person' %}
+                                    <span class="badge bg-info">Evening Person</span>
+                                {% elif profile.sleep_preferences.chronotype == 'intermediate' %}
+                                    <span class="badge bg-secondary">Intermediate</span>
+                                {% elif profile.sleep_preferences.chronotype == 'variable' %}
+                                    <span class="badge bg-light text-dark">Variable</span>
+                                {% else %}
+                                    <span class="text-muted">Not specified</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Environment:</th>
+                            <td>
+                                {% if profile.sleep_preferences.environment_preference == 'dark_quiet' %}
+                                    <span class="badge bg-dark">Dark and Quiet</span>
+                                {% elif profile.sleep_preferences.environment_preference == 'some_light' %}
+                                    <span class="badge bg-light text-dark">Some Light</span>
+                                {% elif profile.sleep_preferences.environment_preference == 'some_noise' %}
+                                    <span class="badge bg-light text-dark">Some Noise</span>
+                                {% elif profile.sleep_preferences.environment_preference == 'noise_and_light' %}
+                                    <span class="badge bg-light text-dark">Noise and Light</span>
+                                {% else %}
+                                    <span class="text-muted">Not specified</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Sleep Anxiety:</th>
+                            <td>
+                                <div class="progress">
+                                    <div class="progress-bar 
+                                        {% if profile.sleep_preferences.sleep_anxiety_level <= 3 %}
+                                            bg-success
+                                        {% elif profile.sleep_preferences.sleep_anxiety_level <= 6 %}
+                                            bg-warning
+                                        {% else %}
+                                            bg-danger
+                                        {% endif %}" 
+                                        role="progressbar" 
+                                        style="width: {{ profile.sleep_preferences.sleep_anxiety_level * 10 }}%;" 
+                                        aria-valuenow="{{ profile.sleep_preferences.sleep_anxiety_level }}" 
+                                        aria-valuemin="0" 
+                                        aria-valuemax="10">
+                                        {{ profile.sleep_preferences.sleep_anxiety_level }}/10
+                                    </div>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Ideal Bedtime:</th>
+                            <td>{{ profile.sleep_preferences.ideal_bedtime or 'Not specified' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Relaxation Techniques:</th>
+                            <td>
+                                {% if profile.sleep_preferences.relaxation_techniques %}
+                                    {% for technique in profile.sleep_preferences.relaxation_techniques %}
+                                        <span class="badge bg-secondary me-1">{{ technique }}</span>
+                                    {% endfor %}
+                                {% else %}
+                                    <span class="text-muted">None specified</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    
+    <div class="col-md-6">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Behavioral Patterns</h4>
+            </div>
+            <div class="card-body">
+                <table class="table">
+                    <tbody>
+                        <tr>
+                            <th>Stress Response:</th>
+                            <td>
+                                {% if profile.behavioral_patterns.stress_response == 'problem_focused' %}
+                                    <span class="badge bg-primary">Problem-Focused</span>
+                                {% elif profile.behavioral_patterns.stress_response == 'emotion_focused' %}
+                                    <span class="badge bg-info">Emotion-Focused</span>
+                                {% elif profile.behavioral_patterns.stress_response == 'social_support' %}
+                                    <span class="badge bg-success">Social Support</span>
+                                {% elif profile.behavioral_patterns.stress_response == 'avoidant' %}
+                                    <span class="badge bg-warning text-dark">Avoidant</span>
+                                {% elif profile.behavioral_patterns.stress_response == 'mixed' %}
+                                    <span class="badge bg-secondary">Mixed</span>
+                                {% else %}
+                                    <span class="text-muted">Not specified</span>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Routine Consistency:</th>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 me-2">
+                                        <div class="progress-bar bg-primary" 
+                                             role="progressbar" 
+                                             style="width: {{ profile.behavioral_patterns.routine_consistency * 10 }}%;" 
+                                             aria-valuenow="{{ profile.behavioral_patterns.routine_consistency }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="10">
+                                        </div>
+                                    </div>
+                                    <span>{{ profile.behavioral_patterns.routine_consistency }}/10</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Exercise Days/Week:</th>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 me-2">
+                                        <div class="progress-bar 
+                                            {% if profile.behavioral_patterns.exercise_frequency <= 2 %}
+                                                bg-danger
+                                            {% elif profile.behavioral_patterns.exercise_frequency <= 4 %}
+                                                bg-warning
+                                            {% else %}
+                                                bg-success
+                                            {% endif %}" 
+                                            role="progressbar" 
+                                            style="width: {{ profile.behavioral_patterns.exercise_frequency / 7 * 100 }}%;" 
+                                            aria-valuenow="{{ profile.behavioral_patterns.exercise_frequency }}" 
+                                            aria-valuemin="0" 
+                                            aria-valuemax="7">
+                                        </div>
+                                    </div>
+                                    <span>{{ profile.behavioral_patterns.exercise_frequency }}/7</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Social Preference:</th>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 me-2">
+                                        <div class="progress-bar bg-info" 
+                                             role="progressbar" 
+                                             style="width: {{ profile.behavioral_patterns.social_activity_preference * 10 }}%;" 
+                                             aria-valuenow="{{ profile.behavioral_patterns.social_activity_preference }}" 
+                                             aria-valuemin="0" 
+                                             aria-valuemax="10">
+                                        </div>
+                                    </div>
+                                    <span>{{ profile.behavioral_patterns.social_activity_preference }}/10</span>
+                                </div>
+                            </td>
+                        </tr>
+                        <tr>
+                            <th>Screen Time Before Bed:</th>
+                            <td>
+                                <div class="d-flex align-items-center">
+                                    <div class="progress flex-grow-1 me-2">
+                                        <div class="progress-bar 
+                                            {% if profile.behavioral_patterns.screen_time_before_bed <= 30 %}
+                                                bg-success
+                                            {% elif profile.behavioral_patterns.screen_time_before_bed <= 60 %}
+                                                bg-warning
+                                            {% else %}
+                                                bg-danger
+                                            {% endif %}" 
+                                            role="progressbar" 
+                                            style="width: {{ profile.behavioral_patterns.screen_time_before_bed / 120 * 100 }}%;" 
+                                            aria-valuenow="{{ profile.behavioral_patterns.screen_time_before_bed }}" 
+                                            aria-valuemin="0" 
+                                            aria-valuemax="120">
+                                        </div>
+                                    </div>
+                                    <span>{{ profile.behavioral_patterns.screen_time_before_bed }} min</span>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-primary text-white">
+                <h4 class="mb-0">Insights</h4>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-lightbulb text-warning me-2"></i>Insights</h5>
+                        <ul class="list-group mb-4">
+                            {% if profile.overall_profile.insights %}
+                                {% for insight in profile.overall_profile.insights %}
+                                    <li class="list-group-item">{{ insight }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item text-muted">No specific insights available</li>
+                            {% endif %}
+                        </ul>
+                        
+                        <h5><i class="fas fa-star text-warning me-2"></i>Strengths</h5>
+                        <ul class="list-group mb-4">
+                            {% if profile.overall_profile.strengths %}
+                                {% for strength in profile.overall_profile.strengths %}
+                                    <li class="list-group-item">{{ strength }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item text-muted">No specific strengths identified</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                    
+                    <div class="col-md-6">
+                        <h5><i class="fas fa-exclamation-triangle text-warning me-2"></i>Challenges</h5>
+                        <ul class="list-group mb-4">
+                            {% if profile.overall_profile.challenges %}
+                                {% for challenge in profile.overall_profile.challenges %}
+                                    <li class="list-group-item">{{ challenge }}</li>
+                                {% endfor %}
+                            {% else %}
+                                <li class="list-group-item text-muted">No specific challenges identified</li>
+                            {% endif %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load profile data from session
+        const profileData = {{ profile|tojson }};
+        
+        // Create personality radar chart
+        const personalityTraits = profileData.personality_traits;
+        const traits = ['Openness', 'Conscientiousness', 'Extraversion', 'Agreeableness', 'Neuroticism'];
+        const values = [
+            personalityTraits.openness, 
+            personalityTraits.conscientiousness, 
+            personalityTraits.extraversion, 
+            personalityTraits.agreeableness, 
+            personalityTraits.neuroticism
+        ];
+        
+        const data = [{
+            type: 'scatterpolar',
+            r: values,
+            theta: traits,
+            fill: 'toself',
+            fillcolor: 'rgba(54, 162, 235, 0.2)',
+            line: {
+                color: 'rgb(54, 162, 235)'
+            }
+        }];
+        
+        const layout = {
+            polar: {
+                radialaxis: {
+                    visible: true,
+                    range: [0, 100]
+                }
+            },
+            showlegend: false,
+            margin: {
+                l: 40,
+                r: 40,
+                b: 40,
+                t: 40,
+            }
+        };
+        
+        Plotly.newPlot('personalityChart', data, layout);
+    });
+</script>
+{% endblock %}
+white">
+                <h3 class="mb-0">Your Psychological Profile</h3>
+            </div>
+            <div class="card-body">
+                <p class="lead">
+                    Based on your responses, we've created a comprehensive analysis of your personality traits, 
+                    sleep preferences, and behavioral patterns.
+                </p>
+                <div class="text-end">
+                    <a href="{{ url_for('profile.reset') }}" class="btn btn-outline-secondary">
+                        <i class="fas fa-redo me-2"></i>Start Over
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mb-4">
+    <div class="col-lg-8">
+        <div class="card mb-4">
+            <div class="card-header bg-primary text-

@@ -1,0 +1,113 @@
+{% extends 'base.html' %}
+
+{% block title %}Psychology Profile Visualizer - Home{% endblock %}
+
+{% block content %}
+<div class="row align-items-center py-5">
+    <div class="col-lg-6">
+        <h1 class="display-4 fw-bold mb-4">Discover Your Psychological Profile</h1>
+        <p class="lead">Gain insights into your personality traits, sleep preferences, and behavioral patterns with our comprehensive profile assessment.</p>
+        <div class="mt-4">
+            <a href="{{ url_for('onboarding.index') }}" class="btn btn-primary btn-lg">
+                Start Assessment <i class="fas fa-arrow-right ms-2"></i>
+            </a>
+        </div>
+        
+        <div class="mt-5">
+            <h4>What You'll Discover:</h4>
+            <div class="row mt-3">
+                <div class="col-md-6">
+                    <div class="d-flex mb-3">
+                        <div class="feature-icon bg-primary text-light p-2 rounded-circle me-3">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div>
+                            <h5>Personality Traits</h5>
+                            <p class="text-muted small">Understand your Big Five personality dimensions</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex mb-3">
+                        <div class="feature-icon bg-primary text-light p-2 rounded-circle me-3">
+                            <i class="fas fa-moon"></i>
+                        </div>
+                        <div>
+                            <h5>Sleep Preferences</h5>
+                            <p class="text-muted small">Learn about your chronotype and sleep patterns</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex mb-3">
+                        <div class="feature-icon bg-primary text-light p-2 rounded-circle me-3">
+                            <i class="fas fa-chart-line"></i>
+                        </div>
+                        <div>
+                            <h5>Behavioral Patterns</h5>
+                            <p class="text-muted small">Discover your daily habits and stress responses</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="d-flex mb-3">
+                        <div class="feature-icon bg-primary text-light p-2 rounded-circle me-3">
+                            <i class="fas fa-lightbulb"></i>
+                        </div>
+                        <div>
+                            <h5>Personalized Insights</h5>
+                            <p class="text-muted small">Get insights based on your unique profile</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="col-lg-6">
+        <div class="hero-image-container text-center">
+            <img src="{{ url_for('static', filename='img/psychology-profile.svg') }}" onerror="this.src='https://via.placeholder.com/600x400?text=Psychology+Profile+Visualization'" alt="Psychology Profile Visualization" class="img-fluid rounded shadow">
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5 bg-light p-4 rounded">
+    <div class="col-12 text-center mb-4">
+        <h2>How It Works</h2>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="step-icon rounded-circle bg-primary text-white mb-3 mx-auto">1</div>
+        <h5>Complete the Assessment</h5>
+        <p class="text-muted">Answer questions about your personality, sleep preferences, and behavior patterns</p>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="step-icon rounded-circle bg-primary text-white mb-3 mx-auto">2</div>
+        <h5>Analyze Your Results</h5>
+        <p class="text-muted">Our system processes your responses to create a comprehensive profile</p>
+    </div>
+    <div class="col-md-4 text-center mb-4">
+        <div class="step-icon rounded-circle bg-primary text-white mb-3 mx-auto">3</div>
+        <h5>Explore Your Profile</h5>
+        <p class="text-muted">View visualizations and insights that help you understand yourself better</p>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .feature-icon {
+        width: 40px;
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    
+    .step-icon {
+        width: 50px;
+        height: 50px;
+        line-height: 50px;
+        font-size: 24px;
+        font-weight: bold;
+    }
+</style>
+{% endblock %}
