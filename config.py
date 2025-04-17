@@ -9,6 +9,7 @@ class Config:
     SESSION_TYPE = 'filesystem'
     STATIC_FOLDER = 'static'
     TEMPLATES_FOLDER = 'templates'
+    PSYCHOLOGY_API_BASE_URL = os.environ.get('PSYCHOLOGY_API_BASE_URL', 'http://localhost:8001/api')
     
 class DevelopmentConfig(Config):
     """Development configuration."""

@@ -1,6 +1,7 @@
-from flask import Blueprint, render_template, request, session, redirect, url_for, jsonify, flash
+from flask import Blueprint, logging, render_template, request, session, redirect, url_for, jsonify, flash
 from app.models.questionnaire import get_questionnaire_by_section, get_all_sections
 from app.utils.scoring import score_responses
+from app.utils.api_client import api_client
 
 onboarding = Blueprint('onboarding', __name__, url_prefix='/onboarding')
 
@@ -55,9 +56,14 @@ def submit_section():
         # All sections completed
         session['onboarding_complete'] = True
         
-        # Score responses and generate profile
-        profile = score_responses(session['responses'])
-        session['profile'] = profile
+        # Submit responses to the API
+        api_result = api_client.submit_responses(session['responses'])
+        
+        if api_result:
+            # Use the profile from the API if available
+            session['profile'] = api_result
+        else:
+            raise Exception("API is unavailable")
         
         # Redirect to profile page
         return redirect(url_for('profile.index'))

@@ -3,10 +3,10 @@ services:
   psychology-service:
     image: ghcr.io/volkerfelix/psychology-service:sha-d13a6dd@sha256:ba37dc8e1f37936d71684ab54441332e9b30200db47ef2aec9f6799d553a18d2
     ports:
-      - "8001:8001"
+      - "8002:8002"
     environment:
       - API_HOST=0.0.0.0
-      - API_PORT=8001
+      - API_PORT=8002
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/psychology_data
       - LOG_LEVEL=INFO
       - DEBUG=False
@@ -25,7 +25,7 @@ services:
       - "5001:5001"
     environment:
       - FLASK_ENV=production
-      - PSYCHOLOGY_API_BASE_URL=http://psychology-service:8001/api
+      - PSYCHOLOGY_API_BASE_URL=http://psychology-service:8002/api
       - SECRET_KEY=your-secret-key-here
     depends_on:
       - psychology-service
