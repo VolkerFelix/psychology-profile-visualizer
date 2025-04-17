@@ -1,0 +1,75 @@
+services:
+  # Psychology Data Microservice
+  psychology-service:
+    image: ghcr.io/volkerfelix/psychology-service:sha-d13a6dd@sha256:ba37dc8e1f37936d71684ab54441332e9b30200db47ef2aec9f6799d553a18d2
+    ports:
+      - "8001:8001"
+    environment:
+      - API_HOST=0.0.0.0
+      - API_PORT=8001
+      - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/psychology_data
+      - LOG_LEVEL=INFO
+      - DEBUG=False
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - psychology-network
+
+  # Visualization Application
+  psychology-visu:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "5001:5001"
+    environment:
+      - FLASK_ENV=production
+      - PSYCHOLOGY_API_BASE_URL=http://psychology-service:8001/api
+      - SECRET_KEY=your-secret-key-here
+    depends_on:
+      - psychology-service
+    networks:
+      - psychology-network
+
+  # PostgreSQL Database for Psychology Data Microservice
+  postgres:
+    image: postgres:14
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+      - POSTGRES_DB=psychology_data
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - psychology-network
+
+  # Optional: PgAdmin for database management
+  pgadmin:
+    image: dpage/pgadmin4
+    ports:
+      - "5050:80"
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@psychologydata.com
+      - PGADMIN_DEFAULT_PASSWORD=admin
+    depends_on:
+      - postgres
+    networks:
+      - psychology-network
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+
+networks:
+  psychology-network:
+    driver: bridge
+
+volumes:
+  postgres-data:
+  pgadmin-data:
