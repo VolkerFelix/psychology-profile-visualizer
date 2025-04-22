@@ -1,15 +1,21 @@
 services:
   # Psychology Data Microservice
   psychology-service:
-    image: ghcr.io/volkerfelix/psychology-service:sha-d13a6dd@sha256:ba37dc8e1f37936d71684ab54441332e9b30200db47ef2aec9f6799d553a18d2
+    image: ghcr.io/volkerfelix/psychology-service:sha-51d6387@sha256:49c7890f6f0eed040519952d7ccd66bfa986a7ad994fc906b8d93e3d26872c70
     ports:
       - "8002:8002"
     environment:
       - API_HOST=0.0.0.0
       - API_PORT=8002
+      - DATABASE_BACKEND=postgres
       - DATABASE_URL=postgresql://postgres:postgres@postgres:5432/psychology_data
+      - DB_HOST=postgres
+      - DB_PORT=5432
+      - DB_USER=postgres
       - LOG_LEVEL=INFO
       - DEBUG=False
+      - PSYCHOLOGY_SERVICE_URL=http://personality-service:8001/api
+    entrypoint: ["/app/entrypoint.sh"]
     depends_on:
       postgres:
         condition: service_healthy
