@@ -1,7 +1,7 @@
 services:
   # Psychology Data Microservice
   psychology-service:
-    image: ghcr.io/volkerfelix/psychology-service:sha-51d6387@sha256:49c7890f6f0eed040519952d7ccd66bfa986a7ad994fc906b8d93e3d26872c70
+    image: ghcr.io/volkerfelix/psychology-service:sha-f9d99b7@sha256:ab80496a3b01063028ffa1609c701b73f98df27275fb43752f8c140a596fb06e
     ports:
       - "8002:8002"
     environment:

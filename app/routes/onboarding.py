@@ -1,4 +1,4 @@
-from flask import Blueprint, logging, render_template, request, session, redirect, url_for, jsonify, flash
+from flask import Blueprint, current_app, render_template, request, session, redirect, url_for, jsonify, flash
 from app.models.questionnaire import get_questionnaire_by_section, get_all_sections
 from app.utils.scoring import score_responses
 from app.utils.api_client import api_client
@@ -85,8 +85,7 @@ def submit_section():
     # Extract responses from form data
     for key, value in data.items():
         if key.startswith('question_'):
-            question_id = key.replace('question_', '')
-            session['responses'][question_id] = value
+            session['responses'][key] = value
     
     # Mark current section as completed
     if current_section not in session.get('sections_completed', []):
@@ -106,17 +105,24 @@ def submit_section():
         # All sections completed
         session['onboarding_complete'] = True
         
-        # Submit responses to the API
-        api_result = api_client.submit_responses(session['responses'])
+        # Get the user ID from the profile data
+        user_id = None
+        if 'profile_data' in session and 'profile' in session['profile_data']:
+            user_id = session['profile_data']['profile']['user_id']
         
-        if api_result:
-            # Use the profile from the API if available
-            session['profile'] = api_result
-        else:
-            raise Exception("API is unavailable")
+        current_app.logger.info(f"Submitting responses for user ID: {user_id}")
         
-        # Redirect to profile page
-        return redirect(url_for('profile.index'))
+        try:
+            # Submit responses to the API
+            profile = api_client.submit_responses(session['responses'], user_id)
+            session['profile'] = profile
+            
+            # Redirect to profile page
+            return redirect(url_for('profile.index'))
+        except Exception as e:
+            current_app.logger.error(f"Error submitting responses: {str(e)}")
+            flash("Error submitting responses. Please try again.", "error")
+            return redirect(url_for('onboarding.index'))
 
 @onboarding.route('/section/<section_name>', methods=['GET'])
 def goto_section(section_name):
