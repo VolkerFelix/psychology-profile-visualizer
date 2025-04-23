@@ -194,7 +194,7 @@
                                 <th>Exercise Days/Week:</th>
                                 <td>
                                     <div class="progress">
-                                        <div class="progress-bar {% if profile.behavioral_patterns and profile.behavioral_patterns.exercise_frequency is not none %}{% if profile.behavioral_patterns.exercise_frequency <= 2 %}bg-danger{% elif profile.behavioral_patterns.exercise_frequency <= 4 %}bg-warning{% else %}bg-success{% endif %}{% else %}bg-secondary{% endif %}"
+                                        <div class="progress-bar {% if not profile.behavioral_patterns or profile.behavioral_patterns.exercise_frequency is none %}bg-secondary{% elif profile.behavioral_patterns.exercise_frequency <= 2 %}bg-danger{% elif profile.behavioral_patterns.exercise_frequency <= 4 %}bg-warning{% else %}bg-success{% endif %}"
                                              role="progressbar"
                                              style="width: {{ ((profile.behavioral_patterns.exercise_frequency or 0) / 7 * 100) }}%"
                                              aria-valuenow="{{ profile.behavioral_patterns.exercise_frequency or 0 }}"
