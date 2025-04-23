@@ -8,6 +8,7 @@ A Flask web application that guides users through a psychological assessment que
 - **Dynamic Visualizations**: Radar charts, bar graphs, and other visualizations to represent psychological profiles
 - **Personalized Insights**: Custom insights and observations based on assessment results
 - **Responsive Design**: Works on desktop and mobile devices
+- **API Integration**: Connects to the psychology-service backend for questionnaire data and profile generation
 
 ## Screenshots
 
@@ -21,6 +22,7 @@ A Flask web application that guides users through a psychological assessment que
 - **Frontend**: HTML, CSS, JavaScript, Bootstrap 5
 - **Data Visualization**: Plotly.js
 - **Styling**: Custom CSS with Bootstrap components
+- **API Integration**: Requests library for communicating with the psychology-service
 
 ## Installation
 
@@ -46,6 +48,7 @@ A Flask web application that guides users through a psychological assessment que
    SECRET_KEY=your-secret-key-here
    FLASK_APP=run.py
    FLASK_ENV=development
+   PSYCHOLOGY_API_BASE_URL=http://localhost:8001/api
    ```
 
 ## Running the Application
@@ -61,6 +64,16 @@ A Flask web application that guides users through a psychological assessment que
 
 2. Open your browser and navigate to `http://localhost:5000`
 
+## Testing the API Connection
+
+You can test the connection to the psychology-service API using the provided test script:
+
+```
+python -m app.utils.test_api
+```
+
+This will verify that the application can successfully connect to the API and retrieve questionnaire data.
+
 ## Project Structure
 
 ```
@@ -71,6 +84,8 @@ psychology-profile-visualizer/
 │   ├── templates/                # HTML templates
 │   ├── models/                   # Data models
 │   ├── utils/                    # Utility functions
+│   │   ├── api_client.py         # API client for psychology-service
+│   │   └── test_api.py           # API connection test script
 │   └── routes/                   # Flask route definitions
 ├── config.py                     # Configuration settings
 ├── requirements.txt              # Project dependencies
@@ -82,11 +97,13 @@ psychology-profile-visualizer/
 
 1. **Onboarding Flow**: Users complete a series of questionnaires covering personality traits (based on the Big Five model), sleep preferences, and behavioral patterns.
 
-2. **Data Processing**: The application scores and processes the responses using psychological assessment algorithms.
+2. **API Integration**: The application fetches questionnaire data from the psychology-service API and submits responses for processing.
 
-3. **Profile Generation**: A comprehensive psychological profile is created with insights into the user's dominant traits, strengths, challenges.
+3. **Data Processing**: The application scores and processes the responses using psychological assessment algorithms, either from the API or locally if the API is unavailable.
 
-4. **Visualization**: Interactive charts and graphics display the profile results in an intuitive and engaging format.
+4. **Profile Generation**: A comprehensive psychological profile is created with insights into the user's dominant traits, strengths, challenges.
+
+5. **Visualization**: Interactive charts and graphics display the profile results in an intuitive and engaging format.
 
 ## Psychological Assessment Basis
 

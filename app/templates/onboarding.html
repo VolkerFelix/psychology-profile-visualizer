@@ -41,7 +41,7 @@
             </div>
         </div>
     </div>
-    
+
     <div class="col-md-9">
         <div class="card">
             <div class="card-header bg-primary text-white">
@@ -56,74 +56,74 @@
                         <h5 class="question-text">{{ question.text }}</h5>
                         <p class="text-muted small mb-3">{{ question.description }}</p>
                         
-                        {% if question.type == 'likert_5' %}
+                        {% if question.question_type == 'likert_5' %}
                         <div class="likert-container">
                             <div class="row text-center likert-scale">
                                 <div class="col-2 likert-option">
-                                    <input type="radio" name="question_{{ question.id }}" value="1" id="{{ question.id }}_1" required>
-                                    <label for="{{ question.id }}_1">Strongly Disagree</label>
+                                    <input type="radio" name="question_{{ question.question_id }}" value="1" id="{{ question.question_id }}_1" required>
+                                    <label for="{{ question.question_id }}_1">Strongly Disagree</label>
                                 </div>
                                 <div class="col-2 likert-option">
-                                    <input type="radio" name="question_{{ question.id }}" value="2" id="{{ question.id }}_2">
-                                    <label for="{{ question.id }}_2">Disagree</label>
+                                    <input type="radio" name="question_{{ question.question_id }}" value="2" id="{{ question.question_id }}_2">
+                                    <label for="{{ question.question_id }}_2">Disagree</label>
                                 </div>
                                 <div class="col-2 likert-option">
-                                    <input type="radio" name="question_{{ question.id }}" value="3" id="{{ question.id }}_3">
-                                    <label for="{{ question.id }}_3">Neutral</label>
+                                    <input type="radio" name="question_{{ question.question_id }}" value="3" id="{{ question.question_id }}_3">
+                                    <label for="{{ question.question_id }}_3">Neutral</label>
                                 </div>
                                 <div class="col-2 likert-option">
-                                    <input type="radio" name="question_{{ question.id }}" value="4" id="{{ question.id }}_4">
-                                    <label for="{{ question.id }}_4">Agree</label>
+                                    <input type="radio" name="question_{{ question.question_id }}" value="4" id="{{ question.question_id }}_4">
+                                    <label for="{{ question.question_id }}_4">Agree</label>
                                 </div>
                                 <div class="col-2 likert-option">
-                                    <input type="radio" name="question_{{ question.id }}" value="5" id="{{ question.id }}_5">
-                                    <label for="{{ question.id }}_5">Strongly Agree</label>
+                                    <input type="radio" name="question_{{ question.question_id }}" value="5" id="{{ question.question_id }}_5">
+                                    <label for="{{ question.question_id }}_5">Strongly Agree</label>
                                 </div>
                             </div>
                         </div>
                         
-                        {% elif question.type == 'multiple_choice' %}
+                        {% elif question.question_type == 'multiple_choice' %}
                         <div class="multiple-choice-container">
                             {% for option in question.options %}
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="radio" name="question_{{ question.id }}" 
-                                       value="{{ option.id }}" id="{{ question.id }}_{{ option.id }}" required>
-                                <label class="form-check-label" for="{{ question.id }}_{{ option.id }}">
+                                <input class="form-check-input" type="radio" name="question_{{ question.question_id }}" 
+                                       value="{{ option.id }}" id="{{ question.question_id }}_{{ option.id }}" required>
+                                <label class="form-check-label" for="{{ question.question_id }}_{{ option.id }}">
                                     {{ option.text }}
                                 </label>
                             </div>
                             {% endfor %}
                         </div>
                         
-                        {% elif question.type == 'slider' %}
+                        {% elif question.question_type == 'slider' %}
                         <div class="slider-container mt-4">
-                            <input type="range" class="form-range" min="{{ question.min }}" max="{{ question.max }}" 
-                                   step="{{ question.step }}" name="question_{{ question.id }}" 
-                                   id="{{ question.id }}_slider" oninput="{{ question.id }}_value.innerText = this.value">
+                            <input type="range" class="form-range" min="{{ question.min_value }}" max="{{ question.max_value }}" 
+                                   step="{{ question.step }}" name="question_{{ question.question_id }}" 
+                                   id="{{ question.question_id }}_slider" oninput="{{ question.question_id }}_value.innerText = this.value">
                             <div class="d-flex justify-content-between mt-2">
-                                <span>{{ question.min }}</span>
-                                <span id="{{ question.id }}_value">{{ (question.min + question.max) // 2 }}</span>
-                                <span>{{ question.max }}</span>
+                                <span>{{ question.min_value }}</span>
+                                <span id="{{ question.question_id }}_value">{{ (question.min_value + question.max_value) // 2 }}</span>
+                                <span>{{ question.max_value }}</span>
                             </div>
                         </div>
                         
-                        {% elif question.type == 'checkbox' %}
+                        {% elif question.question_type == 'checkbox' %}
                         <div class="checkbox-container">
                             {% for option in question.options %}
                             <div class="form-check mb-2">
-                                <input class="form-check-input" type="checkbox" name="question_{{ question.id }}" 
-                                       value="{{ option.id }}" id="{{ question.id }}_{{ option.id }}">
-                                <label class="form-check-label" for="{{ question.id }}_{{ option.id }}">
+                                <input class="form-check-input" type="checkbox" name="question_{{ question.question_id }}" 
+                                       value="{{ option.id }}" id="{{ question.question_id }}_{{ option.id }}">
+                                <label class="form-check-label" for="{{ question.question_id }}_{{ option.id }}">
                                     {{ option.text }}
                                 </label>
                             </div>
                             {% endfor %}
                         </div>
                         
-                        {% elif question.type == 'time' %}
+                        {% elif question.question_type == 'time' %}
                         <div class="time-container">
-                            <input type="time" class="form-control" name="question_{{ question.id }}" 
-                                   id="{{ question.id }}_time" required>
+                            <input type="time" class="form-control" name="question_{{ question.question_id }}" 
+                                   id="{{ question.question_id }}_time" required>
                         </div>
                         {% endif %}
                     </div>
